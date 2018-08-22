@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 // this is our schema to represent a restaurant
 const restaurantSchema = mongoose.Schema({
@@ -29,12 +29,12 @@ const restaurantSchema = mongoose.Schema({
 // properties that are stored in the database. Here we use it
 // to generate a human readable string based on the address object
 // we're storing in Mongo.
-restaurantSchema.virtual("addressString").get(function() {
+restaurantSchema.virtual('addressString').get(function() {
   return `${this.address.building} ${this.address.street}`.trim();
 });
 
 // this virtual grabs the most recent grade for a restaurant.
-restaurantSchema.virtual("grade").get(function() {
+restaurantSchema.virtual('grade').get(function() {
   const gradeObj =
     this.grades.sort((a, b) => {
       return b.date - a.date;
@@ -56,8 +56,12 @@ restaurantSchema.methods.serialize = function() {
   };
 };
 
-// note that all instance methods and virtual properties on our
-// schema must be defined *before* we make the call to `.model`.
-const Restaurant = mongoose.model("Restaurant", restaurantSchema);
+// *all instance methods and virtual properties on our schema
+// must be defined before we make the call to .model.
+// **Mongo will convert the name Restaurant to restaurant.
+// ***optionally a string indicating a collection name in the
+// Mongo database can be passed as a third arg. By default,
+// Mongoose infers the collection name from the model name
+const Restaurant = mongoose.model('Restaurant', restaurantSchema);
 
 module.exports = { Restaurant };
